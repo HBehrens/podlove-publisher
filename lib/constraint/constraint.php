@@ -29,6 +29,10 @@ abstract class Constraint {
 	 * @return bool
 	 */
 	public abstract function isValid();
+	
+	public function __construct($feed) {
+		$this->setResource($feed);
+	}
 
 	/**
 	 * Validates the constraint.

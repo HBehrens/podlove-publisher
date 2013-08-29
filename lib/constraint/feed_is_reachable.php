@@ -9,10 +9,6 @@ class FeedIsReachable extends Constraint {
 	const SCOPE = 'feed';
 	const SEVERITY = 'critical';
 
-	public function __construct($feed) {
-		$this->setResource($feed);
-	}
-
 	/**
 	 * Violation description.
 	 * @return string
@@ -22,7 +18,7 @@ class FeedIsReachable extends Constraint {
 	}
 
 	public function isValid() {
-		
+
 		$url = $this->resource->get_subscribe_url();
 
 		$curl = new Curl;
