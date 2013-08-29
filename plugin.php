@@ -13,6 +13,7 @@ function activate_for_current_blog() {
 	Model\MediaFile::build();
 	Model\Episode::build();
 	Model\Template::build();
+	Model\Violation::build();
 
 	if ( ! Model\FileType::has_entries() ) {
 		$default_types = array(
@@ -175,6 +176,7 @@ function uninstall_for_current_blog() {
 	Model\MediaFile::destroy();
 	Model\Episode::destroy();
 	Model\Template::destroy();
+	Model\Violation::destroy();
 }
 
 add_action( 'admin_head', '\Podlove\custom_admin_icons' );

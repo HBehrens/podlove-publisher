@@ -1,7 +1,25 @@
 <?php
 namespace Podlove\Model;
+use \Podlove\Constraint\Validatable;
 
-class Feed extends Base {
+class Feed extends Base implements Validatable {
+
+	// Validatable Stuff:
+
+	private static $constraints = array();
+
+	public static function constraint($constraintClassName) {
+		self::$constraints[] = $constraintClassName;
+	}
+
+	public function validate() {
+		foreach (self::$constraints as $constraintClassName) {
+			$constraint = new $constraintClassName($this);
+			$constraint->validate();
+		}
+	}
+
+	// Model Stuff:
 
 	public function save() {
 		global $wpdb;
@@ -110,9 +128,13 @@ class Feed extends Base {
 		// fetch releases
 		$media_files = array_filter( $media_files, function($mf){ return $mf->size > 0; });
 		$episode_ids = array_map( function ( $v ) { return $v->episode_id; }, $media_files );
-		$episodes = Episode::find_all_by_where( "id IN (" . implode( ',', $episode_ids ) . ")" );
 
-		return array_map( function ( $v ) { return $v->post_id; }, $episodes );
+		if (count($episode_ids)) {
+			$episodes = Episode::find_all_by_where( "id IN (" . implode( ',', $episode_ids ) . ")" );
+			return array_map( function ( $v ) { return $v->post_id; }, $episodes );
+		} else {
+			return array();
+		}
 	}
 
 	public function get_content_type() {
@@ -194,14 +216,4 @@ Feed::property( 'discoverable', 'INT' );
 Feed::property( 'limit_items', 'INT' );
 Feed::property( 'embed_content_encoded', 'INT' );
 
-// Feed::constraint( 'UrlIsReachable' )
-class FeedIsReachableConstraint {
-
-	const SCOPE = 'feed';
-	const SEVERITY = 'critical';
-
-	public function description() {
-		return "...";
-	}
-
-}
+Feed::constraint( '\Podlove\Constraint\FeedIsReachable' );

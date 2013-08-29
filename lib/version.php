@@ -40,7 +40,7 @@
 namespace Podlove;
 use \Podlove\Model;
 
-define( __NAMESPACE__ . '\DATABASE_VERSION', 45 );
+define( __NAMESPACE__ . '\DATABASE_VERSION', 46 );
 
 add_action( 'init', function () {
 	
@@ -351,6 +351,9 @@ function run_migrations_for_version( $version ) {
 		case 45:
 			delete_transient('podlove_auphonic_user');
 			delete_transient('podlove_auphonic_presets');
+		break;
+		case 46:
+			Model\Violation::build();
 		break;
 	}
 
