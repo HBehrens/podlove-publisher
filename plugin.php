@@ -764,9 +764,6 @@ add_action( 'wp', function() {
 	exit;
 } );
 
-// register ajax actions
-new \Podlove\AJAX\Ajax;
-
 // add podlove to admin bar
 add_action( 'admin_bar_menu', function ( $wp_admin_bar ) {
 	$wp_admin_bar->add_node( array(
@@ -787,3 +784,16 @@ add_action( 'admin_print_styles', function () {
 	wp_register_style( 'podlove-admin-font', \Podlove\PLUGIN_URL . '/css/admin-font.css', array(), \Podlove\get_plugin_header( 'Version' ) );
 	wp_enqueue_style( 'podlove-admin-font' );
 } );
+
+// kick off validation crons
+add_action( 'admin_init', function() {
+	if (!wp_next_scheduled('podlove_validate_feeds')) {
+		wp_schedule_event('podlove_validate_feeds', 'hourly', '\Podlove\podlove_validate_feeds');
+	}
+} );
+
+function podlove_validate_feeds() {
+	foreach (Model\Feed::all() as $feed) {
+		$feed->validate();
+	}
+}

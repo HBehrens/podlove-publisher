@@ -69,10 +69,6 @@ class Dashboard {
 
 		do_action( 'podlove_dashboard_meta_boxes' );
 
-		foreach (Model\Feed::all() as $feed) {
-			$feed->validate();
-		}
-
 		?>
 		<div class="wrap">
 			<?php screen_icon( 'podlove-podcast' ); ?>

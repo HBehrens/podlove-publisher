@@ -7,7 +7,7 @@ use \Podlove\Model;
 class FeedIsReachable extends Constraint {
 
 	const SCOPE = 'feed';
-	const SEVERITY = 'critical';
+	const SEVERITY = Constraint::SEVERITY_CRITICAL;
 
 	/**
 	 * Violation description.
