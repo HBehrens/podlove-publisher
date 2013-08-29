@@ -193,3 +193,15 @@ Feed::property( 'enable', 'INT' );
 Feed::property( 'discoverable', 'INT' );
 Feed::property( 'limit_items', 'INT' );
 Feed::property( 'embed_content_encoded', 'INT' );
+
+// Feed::constraint( 'UrlIsReachable' )
+class FeedIsReachableConstraint {
+
+	const SCOPE = 'feed';
+	const SEVERITY = 'critical';
+
+	public function description() {
+		return "...";
+	}
+
+}
