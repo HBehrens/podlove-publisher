@@ -787,13 +787,36 @@ add_action( 'admin_print_styles', function () {
 
 // kick off validation crons
 add_action( 'admin_init', function() {
-	if (!wp_next_scheduled('podlove_validate_feeds')) {
-		wp_schedule_event('podlove_validate_feeds', 'hourly', '\Podlove\podlove_validate_feeds');
-	}
+
+	if (!wp_next_scheduled('podlove_validate_feeds'))
+		wp_schedule_event(current_time('timestamp'), 'hourly', 'podlove_validate_feeds');
+
+	if (!wp_next_scheduled('podlove_validate_episodes'))
+		wp_schedule_event(current_time('timestamp'), 'hourly', 'podlove_validate_episodes');
+	
 } );
 
+add_action('podlove_validate_feeds', '\Podlove\podlove_validate_feeds');
+add_action('podlove_validate_episodes', '\Podlove\podlove_validate_episodes');
+
+/**
+ * Validate all constrains for all feeds.
+ */
 function podlove_validate_feeds() {
+	// TODO: there must be at least one feed
 	foreach (Model\Feed::all() as $feed) {
 		$feed->validate();
+	}
+}
+
+/**
+ * Validate all constrains for all episodes.
+ *
+ * Warning: The module "Asset Validation" is still responsible for
+ * actually HEAD-Requesting the files once in a while.
+ */
+function podlove_validate_episodes() {
+	foreach (Model\Episode::all() as $episode) {
+		$episode->validate();
 	}
 }

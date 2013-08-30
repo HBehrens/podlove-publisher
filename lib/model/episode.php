@@ -1,13 +1,32 @@
 <?php
 namespace Podlove\Model;
+
 use Podlove\Log;
 use Podlove\ChaptersManager;
+use \Podlove\Constraint\Validatable;
 
 /**
  * We could use simple post_meta instead of a table here
  */
-class Episode extends Base {
+class Episode extends Base implements Validatable {
 
+	// Validatable Stuff:
+
+	private static $constraints = array();
+
+	public static function constraint($constraintClassName) {
+		self::$constraints[] = $constraintClassName;
+	}
+
+	public function validate() {
+		foreach (self::$constraints as $constraintClassName) {
+			$constraint = new $constraintClassName($this);
+			$constraint->validate();
+		}
+	}
+
+	// Model Stuff:
+	
 	/**
 	 * Generate a human readable title.
 	 * 
@@ -129,6 +148,11 @@ class Episode extends Base {
 		return $chapters_manager->get( $format );
 	}
 
+	/**
+	 * Fetches all media files and checks they are ok.
+	 * 
+	 * @return [type] [description]
+	 */
 	public function refetch_files() {
 
 		$valid_files = array();
@@ -207,3 +231,5 @@ Episode::property( 'cover_art', 'VARCHAR(255)' );
 Episode::property( 'chapters', 'TEXT' );
 Episode::property( 'record_date', 'DATETIME' );
 Episode::property( 'publication_date', 'DATETIME' );
+
+Episode::constraint( '\Podlove\Constraint\EpisodeHasValidFiles' );
