@@ -212,6 +212,7 @@ $podcast->property( 'language' );
 
 // register constraints
 Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
+Podcast::constraint( '\Podlove\Constraint\AssetsExist' );
 
 // kick off validation
 function validate_podcast() {
@@ -220,5 +221,7 @@ function validate_podcast() {
 
 add_action('change_podlove_feed', '\Podlove\Model\validate_podcast');
 add_action('delete_podlove_feed', '\Podlove\Model\validate_podcast');
+add_action('change_podlove_episodeasset', '\Podlove\Model\validate_podcast');
+add_action('delete_podlove_episodeasset', '\Podlove\Model\validate_podcast');
 // when the dashboard is called
 add_action('load-toplevel_page_podlove_settings_handle', '\Podlove\Model\validate_podcast');

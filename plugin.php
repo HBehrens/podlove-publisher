@@ -402,6 +402,15 @@ function show_critical_errors() {
 	// if there are errors, always run the system report to see if they are gone
 	run_system_report();
     ?>
+    <style type="text/css">
+    .wrap div.error {
+    	border: 1px solid #CCC;
+    	border-left: 3px solid #f55;
+    	border-radius: 0;
+    	background: #EEE;
+    }
+    </style>
+
     <div class="error">
         
     	<?php if ( isset( $errors['errors'] ) ): ?>
@@ -425,9 +434,7 @@ function show_critical_errors() {
 				<?php $constraint = $violation->getConstraint(); ?>
     			<li>
     				<strong><?php $constraint->the_title(); ?></strong>
-    				<?php
-    				$constraint->the_description();
-    				?>
+    				<?php $constraint->the_description(); ?>
     			</li>
     		<?php endforeach; ?>
     	</ul>
