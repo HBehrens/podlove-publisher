@@ -36,13 +36,6 @@ class SystemReport {
 
 				return $allow_url_fopen;
 			} ),
-			'simplexml' => array( 'callback' => function() use ( &$errors ) {
-				
-				if ( ! $simplexml = in_array('SimpleXML', get_loaded_extensions()) )
-					$errors[] = 'You need to install/activate the PHP SimpleXML module';
-
-				return $simplexml ? 'ok' : 'missing!';
-			} ),
 			'max_execution_time'  => array( 'callback' => function() { return ini_get( 'max_execution_time' ); } ),
 			'upload_max_filesize' => array( 'callback' => function() { return ini_get( 'upload_max_filesize' ); } ),
 			'memory_limit'        => array( 'callback' => function() { return ini_get( 'memory_limit' ); } ),
