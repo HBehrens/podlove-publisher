@@ -52,12 +52,6 @@ class SystemReport {
 				$out = '';
 				$podcast = Model\Podcast::get_instance();
 
-				if ( ! $podcast->title ) {
-					$error = __( 'Your podcast needs a title.', 'podlove' );
-					$errors[] = $error;
-					$out .= $error;
-				}
-
 				if ( ! $podcast->media_file_base_uri ) {
 					$error = __( 'Your podcast needs an upload location for file storage.', 'podlove' );
 					$errors[] = $error;

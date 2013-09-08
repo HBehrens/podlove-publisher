@@ -215,10 +215,13 @@ $podcast->property( 'language' );
 Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
 Podcast::constraint( '\Podlove\Constraint\AssetsExist' );
 Podcast::constraint( '\Podlove\Constraint\PlayerHasAssets' );
+
 Podcast::constraint( '\Podlove\Constraint\System\CurlAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\IconvAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\SimplexmlAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\UrlFopenAllowed' );
+
+Podcast::constraint( '\Podlove\Constraint\Podcast\PodcastHasTitle' );
 
 // kick off validation
 function validate_podcast($id = NULL) {

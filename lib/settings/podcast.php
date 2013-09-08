@@ -5,6 +5,7 @@ use \Podlove\Model;
 class Podcast {
 
 	static $pagehook;
+	static $menu_slug = 'podlove_settings_podcast_handle';
 	
 	public function __construct( $handle ) {
 		
@@ -13,7 +14,7 @@ class Podcast {
 			/* $page_title */ 'Podcast Settings',
 			/* $menu_title */ 'Podcast Settings',
 			/* $capability */ 'administrator',
-			/* $menu_slug  */ 'podlove_settings_podcast_handle',
+			/* $menu_slug  */ self::$menu_slug,
 			/* $function   */ array( $this, 'page' )
 		);
 
