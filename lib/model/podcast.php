@@ -215,7 +215,7 @@ Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
 Podcast::constraint( '\Podlove\Constraint\AssetsExist' );
 
 // kick off validation
-function validate_podcast() {
+function validate_podcast($id = NULL) {
 	Podcast::get_instance()->validate();
 }
 

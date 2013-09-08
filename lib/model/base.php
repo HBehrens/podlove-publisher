@@ -384,11 +384,9 @@ abstract class Base
 	public function save() {
 		global $wpdb;
 
-		do_action('change_' . self::model_slug());
 
 		if ( $this->is_new() ) {
 
-			do_action('create_' . self::model_slug());
 			$this->set_defaults();
 
 			$sql = 'INSERT INTO '
@@ -404,18 +402,20 @@ abstract class Base
 			$success = $wpdb->query( $sql );
 			if ( $success ) {
 				$this->id = mysql_insert_id();
+				do_action('create_' . self::model_slug(), $this->id);
 			}
 		} else {
-			do_action('update_' . self::model_slug(), $this->id);
 			$sql = 'UPDATE ' . self::table_name()
 			     . ' SET '
 			     . implode( ',', array_map( array( $this, 'property_name_to_sql_update_statement' ), self::property_names() ) )
 			     . ' WHERE id = ' . $this->id
 			;
 			$success = $wpdb->query( $sql );
+			do_action('update_' . self::model_slug(), $this->id);
 		}
 
 		$this->is_new = false;
+		do_action('change_' . self::model_slug(), $this->id);
 
 		return $success;
 	}
@@ -453,13 +453,15 @@ abstract class Base
 	public function delete() {
 		global $wpdb;
 
-		do_action('delete_' . self::model_slug(), $this->id);
 		
 		$sql = 'DELETE FROM '
 		     . self::table_name()
 		     . ' WHERE id = ' . $this->id;
 
-		return $wpdb->query( $sql );
+		$success = $wpdb->query( $sql );
+		do_action('delete_' . self::model_slug(), $this->id);
+
+		return $success;
 	}
 
 	private function property_name_to_sql_update_statement( $p ) {

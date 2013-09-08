@@ -48,8 +48,8 @@ abstract class Constraint {
 	 */
 	public abstract function isValid();
 
-	public function __construct($feed) {
-		$this->setResource($feed);
+	public function __construct($resource = NULL) {
+		$this->setResource($resource);
 	}
 
 	/**
