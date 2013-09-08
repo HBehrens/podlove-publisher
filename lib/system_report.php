@@ -29,13 +29,6 @@ class SystemReport {
 
 				return $plugin_data['Version'];
 			} ),
-			'allow_url_fopen' => array( 'callback' => function() use ( &$errors ) {
-
-				if ( ! $allow_url_fopen = ini_get( 'allow_url_fopen' ) )
-					$errors[] = 'allow_url_fopen must be activated in your php.ini';
-
-				return $allow_url_fopen;
-			} ),
 			'max_execution_time'  => array( 'callback' => function() { return ini_get( 'max_execution_time' ); } ),
 			'upload_max_filesize' => array( 'callback' => function() { return ini_get( 'upload_max_filesize' ); } ),
 			'memory_limit'        => array( 'callback' => function() { return ini_get( 'memory_limit' ); } ),

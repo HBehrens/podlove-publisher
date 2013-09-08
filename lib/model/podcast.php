@@ -218,6 +218,7 @@ Podcast::constraint( '\Podlove\Constraint\PlayerHasAssets' );
 Podcast::constraint( '\Podlove\Constraint\System\CurlAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\IconvAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\SimplexmlAvailable' );
+Podcast::constraint( '\Podlove\Constraint\System\UrlFopenAllowed' );
 
 // kick off validation
 function validate_podcast($id = NULL) {
