@@ -123,7 +123,6 @@ function activate() {
 	}
 
 	set_transient( 'podlove_needs_to_flush_rewrite_rules', true );
-	\Podlove\run_system_report();
 }
 
 /**
@@ -400,7 +399,6 @@ function show_critical_errors() {
 		return;
 
 	// if there are errors, always run the system report to see if they are gone
-	run_system_report();
     ?>
     <style type="text/css">
     .wrap div.error {
@@ -443,17 +441,6 @@ function show_critical_errors() {
     <?php
 }
 add_action( 'admin_notices', '\Podlove\show_critical_errors' );
-
-/**
- * System Report needs to be run whenever a setting has changed that could effect something critical.
- */
-function run_system_report() {
-	$report = new SystemReport;
-	$report->run();
-}
-
-add_action( 'update_option_permalink_structure', '\Podlove\run_system_report' );
-add_action( 'update_option_podlove', '\Podlove\run_system_report' );
 
 /**
  * Simple method to allow support for multiple urls per post.
