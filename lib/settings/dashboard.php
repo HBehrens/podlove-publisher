@@ -5,6 +5,7 @@ use \Podlove\Model;
 class Dashboard {
 
 	static $pagehook;
+	static $menu_slug = \Podlove\Podcast_Post_Type::SETTINGS_PAGE_HANDLE;
 
 	public function __construct() {
 
@@ -15,7 +16,7 @@ class Dashboard {
 			/* $page_title */ __( 'Dashboard', 'podlove' ),
 			/* $menu_title */ __( 'Dashboard', 'podlove' ),
 			/* $capability */ 'administrator',
-			/* $menu_slug  */ \Podlove\Podcast_Post_Type::SETTINGS_PAGE_HANDLE,
+			/* $menu_slug  */ self::$menu_slug,
 			/* $function   */ array( $this, 'settings_page' )
 		);
 

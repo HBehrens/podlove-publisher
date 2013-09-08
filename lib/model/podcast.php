@@ -1,6 +1,7 @@
 <?php
 namespace Podlove\Model;
 
+use \Podlove\Settings;
 use \Podlove\Constraint\Validatable;
 
 /**
@@ -213,6 +214,7 @@ $podcast->property( 'language' );
 // register constraints
 Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
 Podcast::constraint( '\Podlove\Constraint\AssetsExist' );
+Podcast::constraint( '\Podlove\Constraint\PlayerHasAssets' );
 
 // kick off validation
 function validate_podcast($id = NULL) {
@@ -223,5 +225,7 @@ add_action('change_podlove_feed', '\Podlove\Model\validate_podcast');
 add_action('delete_podlove_feed', '\Podlove\Model\validate_podcast');
 add_action('change_podlove_episodeasset', '\Podlove\Model\validate_podcast');
 add_action('delete_podlove_episodeasset', '\Podlove\Model\validate_podcast');
-// when the dashboard is called
-add_action('load-toplevel_page_podlove_settings_handle', '\Podlove\Model\validate_podcast');
+// before dashboard is displayed
+add_action('load-toplevel_page_' . Settings\WebPlayer::$menu_slug, '\Podlove\Model\validate_podcast');
+// before web player settings are displayed
+add_action('load-podlove_page_' . Settings\WebPlayer::$menu_slug, '\Podlove\Model\validate_podcast');

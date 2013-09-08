@@ -5,6 +5,7 @@ use \Podlove\Model;
 class WebPlayer {
 
 	static $pagehook;
+	static $menu_slug = 'podlove_webplayer_settings_handle';
 	
 	public function __construct( $handle ) {
 		
@@ -13,7 +14,7 @@ class WebPlayer {
 			/* $page_title */ 'Web Player',
 			/* $menu_title */ 'Web Player',
 			/* $capability */ 'administrator',
-			/* $menu_slug  */ 'podlove_webplayer_settings_handle',
+			/* $menu_slug  */ self::$menu_slug,
 			/* $function   */ array( $this, 'page' )
 		);
 
