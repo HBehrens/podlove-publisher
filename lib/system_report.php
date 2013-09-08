@@ -29,15 +29,6 @@ class SystemReport {
 
 				return $plugin_data['Version'];
 			} ),
-			'iconv' => array( 'callback' => function() use ( &$errors ) {	
-				$iconv_available = function_exists( 'iconv' );
-
-				if ( ! $iconv_available ) {
-					$errors[] = 'You need to install/activate php5-iconv';
-				}
-
-				return $iconv_available ? "available" : "MISSING";
-			} ),
 			'allow_url_fopen' => array( 'callback' => function() use ( &$errors ) {
 
 				if ( ! $allow_url_fopen = ini_get( 'allow_url_fopen' ) )
