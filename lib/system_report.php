@@ -29,26 +29,6 @@ class SystemReport {
 
 				return $plugin_data['Version'];
 			} ),
-			'curl'        => array( 'title' => 'curl Version',      'callback' => function() use ( &$errors ) {
-				$module_loaded = in_array( 'curl', get_loaded_extensions() );
-				$function_disabled = stripos( ini_get( 'disable_functions' ), 'curl_exec' ) !== false;
-				$out = '';
-
-				if ( $module_loaded ) {
-					$curl = curl_version();
-					$out .= $curl['version'];
-				} else {
-					$out .= 'EXTENSION MISSING';
-					$errors[] = 'curl extension is not loaded';
-				}
-
-				if ( $function_disabled ) {
-					$out .= ' | curl_exec is disabled';
-					$errors[] = 'curl_exec is disabled';
-				}
-
-				return $out;
-			} ),
 			'iconv' => array( 'callback' => function() use ( &$errors ) {	
 				$iconv_available = function_exists( 'iconv' );
 

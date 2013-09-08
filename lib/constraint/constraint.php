@@ -28,8 +28,9 @@ abstract class Constraint {
 	/**
 	 * Outputs a description of the constraint violation.
 	 *
-	 * It should explain what's wrong and should contain steps
-	 * to resolve the issue. May contain HTML.
+	 * It should address user directly, explain what's wrong and should contain
+	 * steps to resolve the issue.
+	 * May contain HTML and should be wrapped in `<p>` tags.
 	 */
 	public abstract function the_description();
 
@@ -127,7 +128,7 @@ abstract class Constraint {
 	}
 
 	final private function hasResource() {
-		return static::SCOPE !== 'podcast';
+		return !in_array(static::SCOPE, array('podcast', 'system'));
 	}
 
 	final private function handleValidationSuccess() {

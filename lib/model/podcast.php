@@ -215,6 +215,7 @@ $podcast->property( 'language' );
 Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
 Podcast::constraint( '\Podlove\Constraint\AssetsExist' );
 Podcast::constraint( '\Podlove\Constraint\PlayerHasAssets' );
+Podcast::constraint( '\Podlove\Constraint\System\CurlAvailable' );
 
 // kick off validation
 function validate_podcast($id = NULL) {
@@ -226,6 +227,6 @@ add_action('delete_podlove_feed', '\Podlove\Model\validate_podcast');
 add_action('change_podlove_episodeasset', '\Podlove\Model\validate_podcast');
 add_action('delete_podlove_episodeasset', '\Podlove\Model\validate_podcast');
 // before dashboard is displayed
-add_action('load-toplevel_page_' . Settings\WebPlayer::$menu_slug, '\Podlove\Model\validate_podcast');
+add_action('load-toplevel_page_' . Settings\Dashboard::$menu_slug, '\Podlove\Model\validate_podcast');
 // before web player settings are displayed
 add_action('load-podlove_page_' . Settings\WebPlayer::$menu_slug, '\Podlove\Model\validate_podcast');
