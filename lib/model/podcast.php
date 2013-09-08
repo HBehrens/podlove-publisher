@@ -210,11 +210,15 @@ $podcast->property( 'uri_delimiter' );
 $podcast->property( 'episode_number_length' );
 $podcast->property( 'language' );
 
+// register constraints
 Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
 
+// kick off validation
 function validate_podcast() {
 	Podcast::get_instance()->validate();
 }
 
 add_action('change_podlove_feed', '\Podlove\Model\validate_podcast');
 add_action('delete_podlove_feed', '\Podlove\Model\validate_podcast');
+// when the dashboard is called
+add_action('load-toplevel_page_podlove_settings_handle', '\Podlove\Model\validate_podcast');

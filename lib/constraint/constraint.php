@@ -94,27 +94,40 @@ abstract class Constraint {
 
 	final private function createViolation() {
 		$violation = new Model\Violation;
-		$violation->constraint_class = get_class($this);
+		$violation->constraint_class = self::escapedClassString();
 		$violation->severity = static::SEVERITY;
 		$violation->scope = static::SCOPE;
 
-		if (static::SCOPE !== 'podcast')
+		if (self::hasResource())
 			$violation->scope_resource_id = $this->resource->id;
-		
+
 		$violation->occured_at = date("Y-m-d H:i:s");
 		$violation->last_checked_at = date("Y-m-d H:i:s");
 		$violation->save();
 	}
 
 	final private function findViolation() {
-		return Model\Violation::find_one_by_where(
-			sprintf(
-				'constraint_class = "%s" AND scope = "%s" AND scope_resource_id = "%d" AND resolved_at IS NULL',
-				get_class($this),
-				static::SCOPE,
-				$this->resource->id
-			)
+
+		$where = sprintf(
+			'constraint_class = "%s" AND scope = "%s" AND resolved_at IS NULL',
+			self::escapedClassString(),
+			static::SCOPE
 		);
+		
+		if (self::hasResource())
+			$where .= sprintf(' AND scope_resource_id = "%d"', $this->resource->id);
+
+		return Model\Violation::find_one_by_where($where);
+	}
+
+	final private function escapedClassString() {
+		$class = get_class($this);
+		$class = str_replace("\\", "_", $class);
+		return $class;
+	}
+
+	final private function hasResource() {
+		return static::SCOPE !== 'podcast';
 	}
 
 	final private function handleValidationSuccess() {
