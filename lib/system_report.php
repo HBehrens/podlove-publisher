@@ -4,13 +4,9 @@ namespace Podlove;
 class SystemReport {
 
 	private $fields = array();
-	private $notices = array();
-	private $errors = array();
 
 	public function __construct() {
 
-		$errors =& $this->errors;
-		
 		$this->fields = array(
 			'site'        => array( 'title' => 'Website',           'callback' => function() { return get_site_url(); } ),
 			'php_version' => array( 'title' => 'PHP Version',       'callback' => function() { return phpversion(); } ),
@@ -34,7 +30,7 @@ class SystemReport {
 			'memory_limit'        => array( 'callback' => function() { return ini_get( 'memory_limit' ); } ),
 			'disable_classes'     => array( 'callback' => function() { return ini_get( 'disable_classes' ); } ),
 			'disable_functions'   => array( 'callback' => function() { return ini_get( 'disable_functions' ); } ),
-			'permalinks' => array( 'callback' => function() use ( &$errors ) {
+			'permalinks' => array( 'callback' => function() {
 
 				if ( \Podlove\get_setting( 'website', 'use_post_permastruct' ) == 'on' )
 					return 'ok';
@@ -46,19 +42,6 @@ class SystemReport {
 				}
 
 				return 'ok';
-			} ),
-			'podcast_settings' => array( 'callback' => function() use ( &$errors ) {
-
-				$out = '';
-				$podcast = Model\Podcast::get_instance();
-
-				if ( ! $podcast->media_file_base_uri ) {
-					$error = __( 'Your podcast needs an upload location for file storage.', 'podlove' );
-					$errors[] = $error;
-					$out .= $error;
-				}
-
-				return $out;
 			} )
 		);
 
@@ -66,15 +49,8 @@ class SystemReport {
 	}
 
 	public function run() {
-
-		$this->errors = array();
-		$this->notices = array();
-
-		foreach ( $this->fields as $field_key => $field ) {
+		foreach ( $this->fields as $field_key => $field )
 			$this->fields[ $field_key ]['value'] = call_user_func( $field['callback'] );
-		}
-
-		update_option( 'podlove_global_messages', array( 'errors' => $this->errors, 'notices' => $this->notices ) );
 	}
 
 	public function render() {
@@ -93,30 +69,6 @@ class SystemReport {
 		foreach ( $this->fields as $field_key => $field ) {
 			$title = isset( $field['title'] ) ? $field['title'] : $field_key;
 			$out .= $rfill( $title, $fill_length ) . $field['value'] . "\n";
-		}
-
-		$out .= "\n";
-
-		if ( count( $this->errors ) ) {
-			$out .= count( $this->errors ) . " CRITICAL ERRORS: \n";
-			foreach ( $this->errors as $error ) {
-				$out .= "$error\n";
-			}
-		} else {
-			$out .= "0 errors\n";
-		}
-
-		if ( count( $this->notices ) ) {
-			$out .= count( $this->notices ) . " notices (no dealbreaker, but should be fixed if possible): \n";
-			foreach ( $this->notices as $error ) {
-				$out .= "$error\n";
-			}
-		} else {
-			$out .= "0 notices\n";
-		}
-
-		if ( count( $this->errors ) + count( $this->notices ) === 0 ) {
-			$out .= "Nice, Everything looks fine!";
 		}
 
 		return $out;

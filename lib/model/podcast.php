@@ -222,6 +222,7 @@ Podcast::constraint( '\Podlove\Constraint\System\SimplexmlAvailable' );
 Podcast::constraint( '\Podlove\Constraint\System\UrlFopenAllowed' );
 
 Podcast::constraint( '\Podlove\Constraint\Podcast\PodcastHasTitle' );
+Podcast::constraint( '\Podlove\Constraint\Podcast\PodcastHasUploadLocation' );
 
 // kick off validation
 function validate_podcast($id = NULL) {
@@ -236,3 +237,5 @@ add_action('delete_podlove_episodeasset', '\Podlove\Model\validate_podcast');
 add_action('load-toplevel_page_' . Settings\Dashboard::$menu_slug, '\Podlove\Model\validate_podcast');
 // before web player settings are displayed
 add_action('load-podlove_page_' . Settings\WebPlayer::$menu_slug, '\Podlove\Model\validate_podcast');
+// before podcast settings are displayed
+add_action('load-podlove_page_' . Settings\Podcast::$menu_slug, '\Podlove\Model\validate_podcast');
