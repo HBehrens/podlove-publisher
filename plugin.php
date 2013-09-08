@@ -422,14 +422,11 @@ function show_critical_errors() {
 
     	<ul>
     		<?php foreach ( Model\Violation::find_all_by_where('resolved_at IS NULL') as $violation ): ?>
+				<?php $constraint = $violation->getConstraint(); ?>
     			<li>
+    				<strong><?php $constraint->the_title(); ?></strong>
     				<?php
-    				$className = str_replace("_", "\\", $violation->constraint_class);
-    				$class = new $className;
-    				?>
-    				<strong><?php $class->the_title(); ?></strong>
-    				<?php
-    				$class->the_description();
+    				$constraint->the_description();
     				?>
     			</li>
     		<?php endforeach; ?>

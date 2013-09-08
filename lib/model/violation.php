@@ -13,6 +13,16 @@ class Violation extends Base {
 		$this->save();
 	}
 
+	/**
+	 * Returns associated constraint instance.
+	 * 
+	 * @return Podlove\Model\Constraint
+	 */
+	public function getConstraint() {
+		$className = str_replace("_", "\\", $this->constraint_class);
+		return new $className;
+	}
+
 }
 
 Violation::property( 'id', 'INT NOT NULL AUTO_INCREMENT PRIMARY KEY' );
