@@ -54,7 +54,6 @@ class Feed extends Base implements Validatable {
 			$url = get_feed_link( $this->slug );
 		}
 
-
 		return apply_filters( 'podlove_subscribe_url', $url );
 	}
 

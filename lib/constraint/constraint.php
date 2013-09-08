@@ -5,6 +5,16 @@ use \Podlove\Model;
 
 abstract class Constraint {
 
+	/**
+	 * Severities.
+	 *
+	 * SEVERITY_WARNING: 
+	 * 	Something is not quite right. Important services are probably available
+	 * 	but the issue should be adressed.
+	 * SEVERITY_CRITICAL:
+	 * 	Must be solved as soon as possible.
+	 */
+	const SEVERITY_WARNING = 'warning';
 	const SEVERITY_CRITICAL = 'critical';
 
 	/**
@@ -16,11 +26,17 @@ abstract class Constraint {
 	protected $resource = null;
 
 	/**
-	 * Returns a description of the constraint.
-	 * 
-	 * @return string
+	 * Outputs a description of the constraint violation.
+	 *
+	 * It should explain what's wrong and should contain steps
+	 * to resolve the issue. May contain HTML.
 	 */
-	public abstract function description();
+	public abstract function the_description();
+
+	/**
+	 * Outputs a short title of the constraint violation.
+	 */
+	public abstract function the_title();
 
 	/**
 	 * Validates the constraint.
