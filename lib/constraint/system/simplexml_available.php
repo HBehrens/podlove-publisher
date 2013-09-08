@@ -21,7 +21,7 @@ class SimplexmlAvailable extends Constraint {
 			?>
 		</p>
 		<p>
-			<?php echo __('Helpful resources:') ?>
+			<?php echo __('Helpful resources:', 'podlove') ?>
 			<ul>
 				
 				<li><a href="http://php.net/manual/en/book.simplexml.php">simplexml book</a> [php.net]</li>

@@ -23,7 +23,7 @@ class CurlAvailable extends Constraint {
 			?>
 		</p>
 		<p>
-			<?php echo __('Helpful resources:') ?>
+			<?php echo __('Helpful resources:', 'podlove') ?>
 			<ul>
 				<li><a href="http://www.php.net/manual/en/book.curl.php">curl book</a> [php.net]</li>
 				<li><a href="http://stackoverflow.com/questions/1347146/how-to-enable-curl-in-php-xampp">How to enable cURL in PHP / XAMPP</a> [stackoverflow.com]</li>

@@ -21,7 +21,7 @@ class UrlFopenAllowed extends Constraint {
 			?>
 		</p>
 		<p>
-			<?php echo __('Helpful resources:') ?>
+			<?php echo __('Helpful resources:', 'podlove') ?>
 			<ul>
 				<li><a href="http://php.net/manual/en/filesystem.configuration.php">PHP Runtime Configuration</a> [php.net]</li>
 				<li><a href="http://stackoverflow.com/questions/1724511/how-to-check-where-apache-is-looking-for-a-php-ini-file">How to check where Apache is looking for a php.ini file?</a> [stackoverflow.com]</li>

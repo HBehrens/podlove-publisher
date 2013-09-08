@@ -21,7 +21,7 @@ class IconvAvailable extends Constraint {
 			?>
 		</p>
 		<p>
-			<?php echo __('Helpful resources:') ?>
+			<?php echo __('Helpful resources:', 'podlove') ?>
 			<ul>
 				<li><a href="http://stackoverflow.com/a/8068208/72448">iconv installation instructions for some distributions</a> [stackoverflow.com]</li>
 				<li><a href="http://php.net/manual/en/book.iconv.php">iconv book</a> [php.net]</li>
