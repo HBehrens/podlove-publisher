@@ -1,6 +1,7 @@
 <?php
-
 namespace Podlove\Model;
+
+use \Podlove\Constraint\Validatable;
 
 /**
  * Simplified Singleton model for podcast data.
@@ -8,7 +9,24 @@ namespace Podlove\Model;
  * There is only one podcast, that's why this is a singleton.
  * Data handling is still similar to the other models. Storage is different.
  */
-class Podcast {
+class Podcast implements Validatable {
+
+	// Validatable Stuff:
+
+	private static $constraints = array();
+
+	public static function constraint($constraintClassName) {
+		self::$constraints[] = $constraintClassName;
+	}
+
+	public function validate() {
+		foreach (self::$constraints as $constraintClassName) {
+			$constraint = new $constraintClassName($this);
+			$constraint->validate();
+		}
+	}
+
+	// Model Stuff:
 
 	/**
 	 * Singleton instance container.
@@ -191,4 +209,12 @@ $podcast->property( 'media_file_base_uri' );
 $podcast->property( 'uri_delimiter' );
 $podcast->property( 'episode_number_length' );
 $podcast->property( 'language' );
-// $podcast->property( 'url_template' );
+
+Podcast::constraint( '\Podlove\Constraint\FeedsExist' );
+
+function validate_podcast() {
+	Podcast::get_instance()->validate();
+}
+
+add_action('change_podlove_feed', '\Podlove\Model\validate_podcast');
+add_action('delete_podlove_feed', '\Podlove\Model\validate_podcast');

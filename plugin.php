@@ -788,6 +788,9 @@ add_action( 'admin_print_styles', function () {
 // kick off validation crons
 add_action( 'admin_init', function() {
 
+	// make sure global podcast validation hooks are registered
+	Model\Podcast::get_instance();
+
 	if (!wp_next_scheduled('podlove_validate_feeds'))
 		wp_schedule_event(current_time('timestamp'), 'hourly', 'podlove_validate_feeds');
 

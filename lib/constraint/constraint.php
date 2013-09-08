@@ -97,7 +97,10 @@ abstract class Constraint {
 		$violation->constraint_class = get_class($this);
 		$violation->severity = static::SEVERITY;
 		$violation->scope = static::SCOPE;
-		$violation->scope_resource_id = $this->resource->id;
+
+		if (static::SCOPE !== 'podcast')
+			$violation->scope_resource_id = $this->resource->id;
+		
 		$violation->occured_at = date("Y-m-d H:i:s");
 		$violation->last_checked_at = date("Y-m-d H:i:s");
 		$violation->save();

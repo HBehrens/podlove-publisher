@@ -384,8 +384,11 @@ abstract class Base
 	public function save() {
 		global $wpdb;
 
+		do_action('change_' . self::model_slug());
+
 		if ( $this->is_new() ) {
 
+			do_action('create_' . self::model_slug());
 			$this->set_defaults();
 
 			$sql = 'INSERT INTO '
@@ -403,6 +406,7 @@ abstract class Base
 				$this->id = mysql_insert_id();
 			}
 		} else {
+			do_action('update_' . self::model_slug(), $this->id);
 			$sql = 'UPDATE ' . self::table_name()
 			     . ' SET '
 			     . implode( ',', array_map( array( $this, 'property_name_to_sql_update_statement' ), self::property_names() ) )
@@ -448,6 +452,8 @@ abstract class Base
 	
 	public function delete() {
 		global $wpdb;
+
+		do_action('delete_' . self::model_slug(), $this->id);
 		
 		$sql = 'DELETE FROM '
 		     . self::table_name()
@@ -526,15 +532,24 @@ abstract class Base
 	/**
 	 * Retrieves the database table name.
 	 * 
-	 * The name is derived from the namespace an class name. Additionally, it
-	 * is prefixed with the global WordPress database table prefix.
-	 * @todo cache
-	 * 
-	 * @return string database table name
+	 * @return string
 	 */
 	public static function table_name() {
 		global $wpdb;
-		
+
+		// prefix with $wpdb prefix
+		return $wpdb->prefix . self::model_slug();
+	}
+
+	/**
+	 * Model slug name.
+	 *
+	 * The name is derived from the namespace and class name.
+	 * It starts with 'podlove', for example: 'podlove_feed'.
+	 * 
+	 * @return string
+	 */
+	public static function model_slug() {
 		// get name of implementing class
 		$table_name = get_called_class();
 		// replace backslashes from namespace by underscores
@@ -542,9 +557,7 @@ abstract class Base
 		// remove Models subnamespace from name
 		$table_name = str_replace( 'Model_', '', $table_name );
 		// all lowercase
-		$table_name = strtolower( $table_name );
-		// prefix with $wpdb prefix
-		return $wpdb->prefix . $table_name;
+		return strtolower( $table_name );		
 	}
 	
 	public static function destroy() {
